@@ -4,7 +4,6 @@ import math
 import numpy as np
 import torch.nn.functional as F
 
-
 class ReconstructionLoss:
     def __init__(self, loss_type='mse', reduction='mean'):
         if loss_type not in ['mse', 'mae']:
@@ -37,18 +36,8 @@ def F1_PA(groundtrue, predicted,delay):
     print(start_anomalies)
     print(end_anomalies)
 
-    # predicted = np.asarray(predicted)
-    # print('len predict')
-    # print(len(predicted))
-    #
-    # print('len ground-true')
-    # print(len(groundtrue))
-
-    # breakpoint()
-
     if delay ==None:
 
-        # adjust predicted values
         for k in range (len(start_anomalies)):
             for j in range(start_anomalies[k], end_anomalies[k] + 1):
                 if predicted[j] == 1.:
@@ -62,22 +51,6 @@ def F1_PA(groundtrue, predicted,delay):
                     np.put(predicted, np.arange(start_anomalies[k], end_anomalies[k] + 1, 1), 1.)
                     break
 
-
-
-    # plt.plot(groundtrue)
-    # plt.title('ground true labels')
-    # plt.ylabel('labels')
-    # plt.xlabel('time point')
-    # plt.show()
-    #
-    # plt.plot(predicted)
-    # plt.title('predicted labels')
-    # plt.ylabel('labels')
-    # plt.xlabel('time point')
-    # plt.show()
-
-    # score = F1_score(predicted,groundtrue)
-    # score = f1_score(groundtrue, predicted)
     score, precision, recall = F1_score(predicted, groundtrue)
     return score,precision, recall
 

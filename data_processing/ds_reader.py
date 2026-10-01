@@ -20,11 +20,7 @@ class DatasetLoader():
                                     'chfdbchf15.pkl',
                                     'ltstdb_20221_43.pkl',
                                     'ltstdb_20321_240.pkl',
-                                    'mitdb__100_180.pkl',
-                                    'qtdbsel102.pkl',
-                                    'stdb_308_0.pkl',
-                                    'xmitdb_x108_0.pkl']
-
+                                    'mitdb__100_180.pkl']
 
             self.dataset = get_ECG_dataset(data_path=self.data_path,
                                       dataset_name=self.ecg_dataset_name,
@@ -47,7 +43,6 @@ class DatasetLoader():
         self.__sliding_window_generation(window_size=window_size)
 
     def __sliding_window_generation(self,window_size):
-            # self.train_set, self.test_set, self.validation_set = sliding_window_generation(dataset=self.dataset, window_size=window_size)
 
         self.train_set, self.test_set = sliding_window_generation(dataset=self.dataset, window_size=window_size)
 
@@ -67,12 +62,6 @@ class DatasetLoader():
         test_loader = torch.utils.data.DataLoader(dataset=batch_test_data, batch_size=batch_size,
                                                    shuffle=shuffle, drop_last = False)
 
-        # batch_val_data = torch.utils.data.TensorDataset(torch.tensor(self.validation_set['samples'].astype(np.float32)),
-        #                                                 torch.tensor(self.validation_set['labels'].astype(np.float32)))
-        # val_loader = torch.utils.data.DataLoader(dataset=batch_val_data, batch_size=batch_size,
-        #                                          shuffle=shuffle)
-
-        # return val_loader, test_loader
 
         return test_loader
 
@@ -88,7 +77,6 @@ class DatasetLoader():
             data = self.dataset['test_data']
             labels= self.dataset['test_label']
 
-        # cl=['gray', 'black']
 
         for i in range (data.shape[0]):
             # plt.plot(data[i], color=cl[i])
@@ -126,7 +114,6 @@ class DatasetLoader():
         pass
 
 
-        #plot val data
 
 
 def get_ECG_dataset(data_path,dataset_name,ts_num, normalized = True, validation_ratio=0.2):
@@ -160,7 +147,6 @@ def get_ECG_dataset(data_path,dataset_name,ts_num, normalized = True, validation
             test_data[0][j] = ((test_data[0][j] - f_min) / (f_max - f_min))
             test_data[1][j] = ((test_data[1][j] - f_min) / (f_max - f_min))
 
-    # split to validation and testset
 
     n_validate = int(test_data.shape[1] * validation_ratio)
     validate_data = test_data[:, 0: n_validate]
@@ -341,22 +327,15 @@ def sliding_window_generation(dataset, window_size):
     test_samples, anomaly_labels = testing_samples_generation(test_data=dataset['test_data'],test_label=dataset['test_label'],window_size=window_size)
     testset = {'samples':test_samples, 'labels': anomaly_labels}
 
-    # validate_samples, val_anomaly_labels = testing_samples_generation(test_data=dataset['validate_data'], test_label=dataset['validate_label'], window_size=window_size)
-    # validationset = {'samples': validate_samples, 'labels': val_anomaly_labels}
-
-    # return trainset,testset,validationset
     return trainset, testset
 
 def training_samples_generation(train_data, window_size):
 
-    # generate training data
     dimension = train_data.shape[0]
-
     samples = np.zeros(shape=(train_data.shape[1] - window_size + 1, window_size, dimension))
     reconstruction_label = np.zeros(shape=(train_data.shape[1] - window_size + 1, window_size, dimension))
 
     for i in range(0, train_data.shape[-1] - window_size + 1):
-        # generate data and reconstructed_label
         reconstruction_label[i] = np.copy(train_data[:, i:i + window_size].T)
         samples[i] = np.copy(train_data[:, i:i + window_size].T)
 
@@ -370,7 +349,6 @@ def testing_samples_generation(test_data, test_label, window_size):
     test_labels = np.zeros(shape=(test_data.shape[1] - window_size + 1, 1, window_size))
 
     for i in range(0, test_data.shape[-1] - window_size + 1):
-        # generate data and anomaly labels
         test_labels[i] = np.copy(test_label[i:i + window_size])
         samples[i] = np.copy(test_data[:, i:i + window_size].T)
 

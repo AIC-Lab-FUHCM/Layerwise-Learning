@@ -8,7 +8,6 @@ from modules.tcn_based.tcnNet import Local_TCNNet
 
 def build_CompleteNet(args):
     if args.encoder =='b_tcn' or args.encoder =='in_tcn':
-        print('khoi tao kien truc mang local TCN')
         return Local_TCNNet(num_inputs=args.dimension,
                              num_channels=args.tcn_channels,
                              dropout=args.dropout,

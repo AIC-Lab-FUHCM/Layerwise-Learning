@@ -4,15 +4,8 @@ def generator(args):
     dropout = args.dropout
     if args.encoder =='b_tcn':
         pass
-    elif args.encoder=='trans':
-        pass
-
-
 
     if args.mode == 'train':
-
-
-
 
     if opt.mode == 'test': dropout = 0.
 

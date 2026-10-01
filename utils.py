@@ -7,8 +7,5 @@ def set_seed(seed=42):
     np.random.seed(seed)
     torch.manual_seed(seed)
 
-    # torch.cuda.manual_seed(seed)
-    # torch.cuda.manual_seed_all(seed)
-
-data_source = './dataset/pd/pd/'
+data_source = './dataset/gesture/gesture/'
 checkpoint_loc ='./checkpoints/'

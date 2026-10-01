@@ -18,15 +18,6 @@ class LinearWarmupCosineAnnealingLR(_LRScheduler):
         eta_min: float = 0.0,
         last_epoch: int = -1,
     ) -> None:
-        """
-        Args:
-            optimizer (Optimizer): Wrapped optimizer.
-            warmup_epochs (int): Maximum number of iterations for linear warmup
-            max_epochs (int): Maximum number of iterations
-            warmup_start_lr (float): Learning rate to start the linear warmup. Default: 0.
-            eta_min (float): Minimum learning rate. Default: 0.
-            last_epoch (int): The index of last epoch. Default: -1.
-        """
         self.warmup_epochs = warmup_epochs
         self.max_epochs = max_epochs
         self.warmup_start_lr = warmup_start_lr
@@ -35,9 +26,7 @@ class LinearWarmupCosineAnnealingLR(_LRScheduler):
         super(LinearWarmupCosineAnnealingLR, self).__init__(optimizer, last_epoch)
 
     def get_lr(self) -> List[float]:
-        """
-        Compute learning rate using chainable form of the scheduler
-        """
+       
         if not self._get_lr_called_within_step:
             warnings.warn(
                 "To get the last learning rate computed by the scheduler, "
@@ -70,9 +59,7 @@ class LinearWarmupCosineAnnealingLR(_LRScheduler):
         ]
 
     def _get_closed_form_lr(self) -> List[float]:
-        """
-        Called when epoch is passed as a param to the `step` function of the scheduler.
-        """
+        
         if self.last_epoch < self.warmup_epochs:
             return [
                 self.warmup_start_lr + self.last_epoch * (base_lr - self.warmup_start_lr) / (self.warmup_epochs - 1)

@@ -9,9 +9,8 @@ class FixedReadout(nn.Module):
         self.register_buffer('readout_matrix', readout_matrix)
 
     def forward(self, x):
-        # x is expected to be of shape (batch_size, input_dim)
         if self.readout_type == 1:
-            #print(x.shape, self.readout_matrix.shape)
+        
             return torch.matmul(x, self.readout_matrix)
 
         elif self.readout_type == 2:
